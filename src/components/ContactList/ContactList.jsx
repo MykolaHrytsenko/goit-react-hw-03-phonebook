@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import css from './ContactList.module.css';
-import { nanoid } from 'nanoid';
+// import { nanoid } from 'nanoid';
 
 export class ContactList extends Component {
   deleteId = Id => {
     this.props.del(Id);
   };
   createList = () => {
-    return this.props.contacts.map(contact => {
+    return this.props.contacts.map(({ id, name, number }) => {
       return (
-        <li key={nanoid()} id={contact.id}>
-          {`${contact.name}: ${contact.number}`}
+        <li key={id}>
+          {`${name}: ${number}`}
           <button
             className={css.btn}
-            data-id={contact.id}
-            onClick={() => this.deleteId(contact.id)}
+            data-id={id}
+            onClick={() => this.deleteId(id)}
           >
             Delete
           </button>

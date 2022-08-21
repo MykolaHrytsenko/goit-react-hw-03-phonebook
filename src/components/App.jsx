@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
+import { nanoid } from 'nanoid';
 
 export class App extends Component {
   state = {
@@ -28,18 +29,25 @@ export class App extends Component {
     }
   }
 
-  formSubmitHandler = data => {
-    this.repeatControl(data);
-  };
+  formSubmitHandler = ({ name, number }) => {
+    const contact = {
+      id: nanoid(),
+      name,
+      number,
+    };
 
-  repeatControl = data => {
-    this.state.contacts.find(contact => contact.name === data.name)
-      ? alert(` ${data.name} is already in contacts. `)
-      : this.setState(prevState => {
-          return {
-            contacts: [...prevState.contacts, data],
-          };
-        });
+    const { contacts } = this.state;
+    const normalzeName = name.toLocaleLowerCase();
+    // eslint-disable-next-line
+    {
+      contacts.find(
+        contact => contact.name.toLocaleLowerCase() === normalzeName
+      )
+        ? alert(`${contact.name} is already in contacts`)
+        : this.setState(({ contacts }) => ({
+            contacts: [contact, ...contacts],
+          }));
+    }
   };
 
   elementDelete = (arr, idContact) => {
